@@ -30,6 +30,11 @@ find_package(Eigen3 3.4 REQUIRED)
 find_package(Ceres REQUIRED COMPONENTS SuiteSparse)
 find_package(Boost REQUIRED)
 
+# SuiteSparse
+find_package(SuiteSparse REQUIRED)
+message(STATUS "SuiteSparse include dirs: ${SuiteSparse_INCLUDE_DIRS}")
+message(STATUS "SuiteSparse libraries: ${SuiteSparse_LIBRARIES}")
+
 if(TESTS_ENABLED)
     message(STATUS "Enabling tests")
     find_package(GTest REQUIRED)
@@ -39,3 +44,13 @@ if (OPENMP_ENABLED)
     message(STATUS "Enabling OpenMP")
     find_package(OpenMP REQUIRED)
 endif()
+
+# Link libraries
+target_link_libraries(glomap PRIVATE 
+    ${Ceres_LIBRARIES} 
+    ${Boost_LIBRARIES} 
+    ${SuiteSparse_LIBRARIES} 
+    ${PoseLib_LIBRARIES} 
+    ${COLMAP_LIBRARIES}
+    Eigen3::Eigen
+)
